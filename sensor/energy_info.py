@@ -1,4 +1,4 @@
-from house_unfo import HouseInfo
+from house_info import HouseInfo
 from datetime import date, dateetime
 
 
