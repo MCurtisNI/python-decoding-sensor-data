@@ -9,9 +9,15 @@ class EnergyData(HouseInfo):
 
     def _get_energy(self, rec):
         energy = int(rec, base=16)
-        energy = energy & ENERGY_BITS
+        energy = energy & self.ENERGY_BITS
         energy = energy >> 4
         return energy
+
+    def _convert_data(self, data):
+        recs = []
+        for rec in data:
+            recs.append(_get_energy(rec))
+        return recs
 
     def get_data_by_area(self, rec_area=0):
         recs = super().get_data_by_area("energy_usage", rec_area)
@@ -22,5 +28,6 @@ class EnergyData(HouseInfo):
         return self._convert_data(recs)
 
     def calculate_energy_usage(self, data):
-        total_energy = (sum(field) for field in data)
+        total_energy = (sum(field * self.ENERGY_PER_BULB) for field in data)
         return total_energy
+    
